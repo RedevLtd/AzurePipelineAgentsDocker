@@ -1,9 +1,11 @@
-name: publish
+name: publish dotnet core
 
 on:
   push:
     branches:
     - master
+    paths:
+    - 'DotNetCore/**'
 
 jobs:
   publish-android-sdk-azure-devops-agent-image:
