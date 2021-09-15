@@ -8,7 +8,7 @@ on:
     - 'DotNetCore/**'
 
 jobs:
-  publish-android-sdk-azure-devops-agent-image:
+  publish-dotnet-core-agent-image:
     runs-on: ubuntu-latest
 
     steps:
