@@ -21,7 +21,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build the android-sdk-azure-devops-agent Docker image
+    - name: Build the windows-office-azure-devops-agent Docker image
       run: |
         docker build WindowsOffice --tag ghcr.io/redevltd/windows-office-azure-devops-agent:latest        
         docker push ghcr.io/redevltd/windows-office-azure-devops-agent:latest
