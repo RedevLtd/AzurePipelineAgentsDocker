@@ -1,4 +1,4 @@
-name: publish dotnet core
+name: publish Windows Office
 
 on:
   push:
