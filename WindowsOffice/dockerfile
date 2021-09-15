@@ -61,3 +61,7 @@ RUN @('4.0', '4.5.2', '4.6.2', '4.7.2') `
     Expand-Archive referenceassemblies.zip -Force -DestinationPath """${Env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework"""; `
     Remove-Item -Force referenceassemblies.zip; `
     }
+
+COPY start.ps1 .
+RUN mkdir azp
+CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
