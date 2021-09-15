@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish-windows-office-agent-image:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v2
