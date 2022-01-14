@@ -1,0 +1,8 @@
+# escape=`
+
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8
+WORKDIR /
+
+COPY start.ps1 .
+RUN mkdir azp
+CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
