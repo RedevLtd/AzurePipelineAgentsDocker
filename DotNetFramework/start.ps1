@@ -50,6 +50,7 @@ try
     --agent "$(if (Test-Path Env:AZP_AGENT_NAME) { ${Env:AZP_AGENT_NAME} } else { ${Env:computername} })" `
     --url "$(${Env:AZP_URL})" `
     --auth PAT `
+    --sslskipcertvalidation `
     --token "$(Get-Content ${Env:AZP_TOKEN_FILE})" `
     --pool "$(if (Test-Path Env:AZP_POOL) { ${Env:AZP_POOL} } else { 'Default' })" `
     --work "$(if (Test-Path Env:AZP_WORK) { ${Env:AZP_WORK} } else { '_work' })" `
