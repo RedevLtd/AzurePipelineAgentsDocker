@@ -8,7 +8,7 @@ on:
     - 'DotNetFrameworkAlt/**'
 
 jobs:
-  publish-dotnet-core-agent-image:
+  publish-dotnetframeworkalt-agent-image:
     runs-on: windows-2022
 
     steps:
