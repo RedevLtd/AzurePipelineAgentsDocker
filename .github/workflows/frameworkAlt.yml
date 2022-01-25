@@ -1,0 +1,27 @@
+name: publish dotnet framework alt
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - 'DotNetFrameworkAlt/**'
+
+jobs:
+  publish-dotnet-core-agent-image:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build the dotnetframeworkalt-azure-devops-agent Docker image
+      run: |
+        docker build DotNetFrameworkAlt --tag ghcr.io/redevltd/dotnetframeworkalt-azure-devops-agent:latest        
+        docker push ghcr.io/redevltd/dotnetframeworkalt-azure-devops-agent:latest
