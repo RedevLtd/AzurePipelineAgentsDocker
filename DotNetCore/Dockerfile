@@ -15,6 +15,7 @@ RUN apt-get install software-properties-common
 RUN apt-get install apt-transport-https
 RUN apt-get update
 RUN apt-get install powershell
+RUN apt-get install nodejs
 RUN apt-get install dotnet-sdk-3.1
 RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
