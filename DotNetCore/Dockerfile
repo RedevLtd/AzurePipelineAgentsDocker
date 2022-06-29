@@ -22,6 +22,9 @@ RUN apt-get install dotnet-sdk-3.1
 RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
 
+# Install Azure CLI for Azure CLI tasks
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
 RUN apt-get update && \
     apt-get install -y openjdk-8-jdk && \
     apt-get install -y ant && \
