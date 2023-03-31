@@ -29,7 +29,10 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN curl -sSL https://get.docker.com/ | sh
 
 # Install k6 for load testing
-RUN apt-get install k6
+RUN sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+RUN echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+RUN sudo apt-get update
+RUN sudo apt-get install k6
 
 # Install Docker-Compose to run dokcer compose tasks on this agent
 RUN curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
