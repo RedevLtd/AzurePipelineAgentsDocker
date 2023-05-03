@@ -35,6 +35,9 @@ RUN echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.
 RUN apt-get update
 RUN apt-get install k6
 
+# Install zip
+RUN apt install zip
+
 # Install Docker-Compose to run dokcer compose tasks on this agent
 RUN curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
