@@ -25,6 +25,7 @@ RUN apt-get install dotnet-sdk-7.0
 
 # Install Azure CLI for Azure CLI tasks
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+ENV Azure_CLI true
 
 # Install Docker to run docker on this agent
 RUN curl -sSL https://get.docker.com/ | sh
