@@ -39,6 +39,7 @@ RUN apt-get install k6
 
 # Install zip
 RUN apt install zip
+ENV zip /usr/bin/zip
 
 # Install Docker-Compose to run dokcer compose tasks on this agent
 RUN curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
