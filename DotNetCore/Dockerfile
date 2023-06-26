@@ -23,6 +23,9 @@ RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
 RUN apt-get install dotnet-sdk-7.0
 
+# Install NuGet CLI
+RUN apt-get install nuget
+
 # Install Azure CLI for Azure CLI tasks
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 ENV Azure_CLI true
