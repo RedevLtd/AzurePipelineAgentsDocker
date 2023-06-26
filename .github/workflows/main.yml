@@ -21,7 +21,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build the android-sdk-azure-devops-agent Docker image
+    - name: Build the dotnet-core-azure-devops-agent Docker image
       run: |
         docker build DotNetCore --tag ghcr.io/redevltd/dotnetcore-azure-devops-agent:latest        
         docker push ghcr.io/redevltd/dotnetcore-azure-devops-agent:latest
