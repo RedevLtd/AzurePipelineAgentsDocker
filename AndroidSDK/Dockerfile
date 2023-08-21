@@ -75,7 +75,7 @@ RUN mkdir "$ANDROID_SDK_ROOT" .android \
  && unzip sdk.zip \
  && rm sdk.zip \
  && cd .. \
- && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager "tools" "platforms;android-29" "build-tools;30.0.3" \
+ && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager "tools" "platforms;android-29" "build-tools;30.0.3" "platforms;android-33" \
  && yes | $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager --licenses
 
 # Install Gradle
