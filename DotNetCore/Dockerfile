@@ -29,7 +29,7 @@ RUN mkdir -p /usr/tmp/dotnet
 RUN echo $DOTNET_ROOT
 RUN curl https://download.visualstudio.microsoft.com/download/pr/9144f37e-b370-41ee-a86f-2d2a69251652/bc1d544112ec134184a5aec7f7a1eaf9/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz --output /usr/tmp/dotnet/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz
 RUN tar zxf "/usr/tmp/dotnet/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz" -C "/usr/share/dotnet"
-RUN dotnet --lisk-sdks
+RUN dotnet --list-sdks
 
 # Install NuGet CLI
 RUN apt-get install nuget
