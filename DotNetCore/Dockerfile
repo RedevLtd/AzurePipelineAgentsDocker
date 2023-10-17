@@ -15,6 +15,7 @@ RUN apt-get install software-properties-common
 RUN apt-get install apt-transport-https
 RUN apt-get update
 RUN apt-get install powershell
+ENV pwsh /usr/bin/pwsh
 RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get install nodejs
