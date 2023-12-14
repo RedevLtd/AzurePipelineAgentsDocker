@@ -1,8 +1,34 @@
-# escape=`
-
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8
+FROM mcr.microsoft.com/windows/server:ltsc2022
 WORKDIR /
+ 
+# Set default shell to PowerShell
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+ 
+# Install chocolatey
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
+    iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+ 
+# Set default confirmation value to yes
+RUN choco feature enable -n allowGlobalConfirmation
 
+# Install VS build tools and other workloads
+RUN choco install \
+    visualstudio2022buildtools \
+    visualstudio2022testagent \
+    visualstudio2022-workload-azurebuildtools \
+    visualstudio2022-workload-manageddesktopbuildtools \
+    visualstudio2022-workload-nodebuildtools \
+    visualstudio2022-workload-webbuildtools
+ 
+# Install .NET Framework 3.5, 3.0, 2.0
+RUN choco install dotnet3.5
+ 
+# Install custom ST dependantcies
+RUN choco install advanced-installer; setx AdvancedInstaller true /M
+RUN choco install dotnetreactor --ignore-checksums
+
+# Start the azure devops agent
 COPY start.ps1 .
 RUN mkdir azp
 CMD powershell -ExecutionPolicy Unrestricted .\start.ps1

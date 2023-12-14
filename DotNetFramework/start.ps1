@@ -3,17 +3,10 @@ if (-not (Test-Path Env:AZP_URL)) {
   exit 1
 }
 
-if (-not (Test-Path Env:AZP_TOKEN_FILE)) {
-  if (-not (Test-Path Env:AZP_TOKEN)) {
-    Write-Error "error: missing AZP_TOKEN environment variable"
-    exit 1
-  }
-
-  $Env:AZP_TOKEN_FILE = "\azp\.token"
-  $Env:AZP_TOKEN | Out-File -FilePath $Env:AZP_TOKEN_FILE
+if (-not (Test-Path Env:AZP_TOKEN)) {
+  Write-Error "error: missing AZP_TOKEN environment variable"
+  exit 1
 }
-
-Remove-Item Env:AZP_TOKEN
 
 if ((Test-Path Env:AZP_WORK) -and -not (Test-Path $Env:AZP_WORK)) {
   New-Item $Env:AZP_WORK -ItemType directory | Out-Null
@@ -23,13 +16,15 @@ New-Item "\azp\agent" -ItemType directory | Out-Null
 Set-Location azp
 
 # Let the agent ignore the token env variables
-$Env:VSO_AGENT_IGNORE = "AZP_TOKEN,AZP_TOKEN_FILE"
+$Env:VSO_AGENT_IGNORE = "AZP_TOKEN"
 
 Set-Location agent
 
 Write-Host "1. Determining matching Azure Pipelines agent..." -ForegroundColor Cyan
 
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$(Get-Content ${Env:AZP_TOKEN_FILE})"))
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$(${Env:AZP_TOKEN})"))
 $package = Invoke-RestMethod -Headers @{Authorization=("Basic $base64AuthInfo")} "$(${Env:AZP_URL})/_apis/distributedtask/packages/agent?platform=win-x64&`$top=1"
 $packageUrl = $package[0].Value.downloadUrl
 
@@ -51,7 +46,7 @@ try
     --url "$(${Env:AZP_URL})" `
     --auth PAT `
     --sslskipcertvalidation `
-    --token "$(Get-Content ${Env:AZP_TOKEN_FILE})" `
+    --token "$(${Env:AZP_TOKEN})" `
     --pool "$(if (Test-Path Env:AZP_POOL) { ${Env:AZP_POOL} } else { 'Default' })" `
     --work "$(if (Test-Path Env:AZP_WORK) { ${Env:AZP_WORK} } else { '_work' })" `
     --replace
@@ -66,5 +61,5 @@ finally
 
   .\config.cmd remove --unattended `
     --auth PAT `
-    --token "$(Get-Content ${Env:AZP_TOKEN_FILE})"
+    --token "$(${Env:AZP_TOKEN})"
 }
