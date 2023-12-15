@@ -24,11 +24,11 @@ RUN choco install \
 # Install .NET Framework 3.5, 3.0, 2.0
 RUN choco install dotnet3.5
  
-# Install custom ST dependantcies
+# Install custom ST dependencies
 RUN choco install advanced-installer; setx AdvancedInstaller true /M
 RUN choco install dotnetreactor --ignore-checksums
 
-# Start the azure devops agent
+# Start the Azure DevOps agent
 COPY start.ps1 .
 RUN mkdir azp
 CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
