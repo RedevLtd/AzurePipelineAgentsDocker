@@ -25,8 +25,10 @@ RUN choco install \
 RUN choco install dotnet3.5
  
 # Install custom ST dependencies
-RUN choco install advanced-installer; setx AdvancedInstaller true /M
-RUN choco install dotnetreactor --ignore-checksums
+RUN choco install advanced-installer --version 21.0.1; \
+    setx AdvancedInstaller 'C:\Program Files `(x86`)\Caphyon\Advanced Installer 21.0.1\bin\x86\AdvancedInstaller.com' /M
+
+RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
 # Start the Azure DevOps agent
 COPY start.ps1 .
