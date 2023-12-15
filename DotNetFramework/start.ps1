@@ -12,6 +12,8 @@ if ((Test-Path Env:AZP_WORK) -and -not (Test-Path $Env:AZP_WORK)) {
   New-Item $Env:AZP_WORK -ItemType directory | Out-Null
 }
 
+Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses ("8.8.8.8","8.8.4.4")
+
 New-Item "\azp\agent" -ItemType directory | Out-Null
 Set-Location azp
 
