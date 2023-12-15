@@ -22,6 +22,8 @@ Set-Location agent
 
 Write-Host "1. Determining matching Azure Pipelines agent..." -ForegroundColor Cyan
 
+Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses ("8.8.8.8","8.8.4.4")
+
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$(${Env:AZP_TOKEN})"))
