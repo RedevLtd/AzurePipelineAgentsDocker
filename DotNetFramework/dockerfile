@@ -30,6 +30,10 @@ RUN choco install advanced-installer --version 21.0.1; \
 
 RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
+COPY PureComponents_NETWinFormsSuite_V2011.msi .
+RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinFormsSuite_V2011.msi /quiet'
+RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
+
 # Start the Azure DevOps agent
 COPY start.ps1 .
 RUN mkdir azp

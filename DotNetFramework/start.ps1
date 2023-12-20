@@ -13,6 +13,13 @@ if (-not (Test-Path Env:AZP_TOKEN_FILE)) {
   $Env:AZP_TOKEN | Out-File -FilePath $Env:AZP_TOKEN_FILE
 }
 
+if ((Test-Path Env:PURE_COMPONENTS_LICENCE)) {
+  $Env:PURE_COMPONENTS_LICENCE | Out-File -FilePath "C:\Users\ContainerAdministrator\Documents\PureComponents.EntrySet.2011-01.lic"
+}
+else {
+  Write-Warning "waning: The PURE_COMPONENTS_LICENCE environmental variable was not found."
+}
+
 Remove-Item Env:AZP_TOKEN
 
 if ((Test-Path Env:AZP_WORK) -and -not (Test-Path $Env:AZP_WORK)) {
