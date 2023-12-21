@@ -13,11 +13,35 @@ if (-not (Test-Path Env:AZP_TOKEN_FILE)) {
   $Env:AZP_TOKEN | Out-File -FilePath $Env:AZP_TOKEN_FILE
 }
 
-if ((Test-Path Env:PURE_COMPONENTS_LICENCE)) {
-  $Env:PURE_COMPONENTS_LICENCE | Out-File -FilePath "C:\Users\ContainerAdministrator\Documents\PureComponents.EntrySet.2011-01.lic"
+# Set PureComponents license if present
+if ((Test-Path Env:PURE_COMPONENTS_LICENSE)) {
+  Write-Host "info: PURE_COMPONENTS_LICENSE environmental variable found. Activating license..." -ForegroundColor Cyan
+
+  $Env:PURE_COMPONENTS_LICENSE | Out-File -FilePath "C:\Users\ContainerAdministrator\Documents\PureComponents.EntrySet.2011-01.lic"
+
+  Write-Host "info: PURE_COMPONENTS_LICENSE activated." -ForegroundColor Green
 }
 else {
-  Write-Warning "waning: The PURE_COMPONENTS_LICENCE environmental variable was not found."
+  Write-Warning "The PURE_COMPONENTS_LICENSE environmental variable was not found."
+}
+
+Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses ("8.8.8.8","8.8.4.4")
+
+# Set AdvancedInstaller license if present
+if ((Test-Path Env:ADVANCED_INSTALLER_LICENSE)) {
+  Write-Host "info: ADVANCED_INSTALLER_LICENCE environmental variable found. Activating license..." -ForegroundColor Cyan
+
+  & $Env:AdvancedInstaller /register $Env:ADVANCED_INSTALLER_LICENSE
+
+  if ($LastExitCode -ne 0) {
+    Write-Error("Activating license failed. Last exit code was not equal to 0. Last exit code {0}" -f $LastExitCode)
+    exit 1
+  }
+
+  Write-Host "info: ADVANCED_INSTALLER_LICENCE activated." -ForegroundColor Green
+}
+else {
+  Write-Warning "The ADVANCED_INSTALLER_LICENCE environmental variable was not found."
 }
 
 Remove-Item Env:AZP_TOKEN
@@ -30,13 +54,11 @@ New-Item "\azp\agent" -ItemType directory | Out-Null
 Set-Location azp
 
 # Let the agent ignore the token env variables
-$Env:VSO_AGENT_IGNORE = "AZP_TOKEN,AZP_TOKEN_FILE"
+$Env:VSO_AGENT_IGNORE = "AZP_TOKEN,AZP_TOKEN_FILE,PURE_COMPONENTS_LICENCE,ADVANCED_INSTALLER_LICENCE"
 
 Set-Location agent
 
 Write-Host "1. Determining matching Azure Pipelines agent..." -ForegroundColor Cyan
-
-Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses ("8.8.8.8","8.8.4.4")
 
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 
