@@ -25,14 +25,16 @@ RUN choco install \
 RUN choco install dotnet3.5
  
 # Install custom ST dependencies
-RUN choco install advanced-installer --version 21.0.1; \
-    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 21.0.1\bin\x86\AdvancedInstaller.com' /M
+RUN choco install advanced-installer --version 21.1.0; \
+    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 21.1\bin\x86\AdvancedInstaller.com' /M
 
 RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
 COPY PureComponents_NETWinFormsSuite_V2011.msi .
 RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinFormsSuite_V2011.msi /quiet'
 RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
+
+RUN choco install 7zip.install
 
 # Start the Azure DevOps agent
 COPY start.ps1 .
