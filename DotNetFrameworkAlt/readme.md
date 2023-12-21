@@ -2,7 +2,7 @@
 
 Uses a standard base windows server image, and manually installs the various frameworks, sdks and test tools
 
-docker build -t dotnetframeworkalt-azure-devops-agent .
+docker build -t dotnetframeworkalt-azure-devops-agent.
 
 Windows Command:
 
