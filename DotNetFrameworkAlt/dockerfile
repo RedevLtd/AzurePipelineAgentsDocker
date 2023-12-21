@@ -1,48 +1,42 @@
-# escape=`
-
 FROM mcr.microsoft.com/windows/server:ltsc2022
 WORKDIR /
-
+ 
+# Set default shell to PowerShell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-RUN Invoke-WebRequest -UseBasicParsing https://download.visualstudio.microsoft.com/download/pr/aaa9f801-39de-47ad-9333-9b607c71a271/f78504e5f20d0f135bf5282f06447e67/vs_testagent.exe -OutFile vs_TestAgent.exe; `
-    Start-Process vs_TestAgent.exe -ArgumentList '--quiet', '--norestart', '--nocache' -NoNewWindow -Wait; `
-    Remove-Item -Force vs_TestAgent.exe; `
-    Invoke-WebRequest -UseBasicParsing https://download.visualstudio.microsoft.com/download/pr/bea50589-003e-423f-b887-9bf2d70e998c/acfe10c084a64949c1fff4d864ed9b35/vs_buildtools.exe -OutFile vs_BuildTools.exe; `
-    # Installer won't detect DOTNET_SKIP_FIRST_TIME_EXPERIENCE if ENV is used, must use setx /M
-    setx /M DOTNET_SKIP_FIRST_TIME_EXPERIENCE 1; `
-    Start-Process vs_BuildTools.exe `
-    -ArgumentList `
-    '--add', 'Microsoft.VisualStudio.Workload.MSBuildTools', `
-    '--add', 'Microsoft.VisualStudio.Workload.NetCoreBuildTools', `
-    '--add', 'Microsoft.VisualStudio.Workload.AzureBuildTools', `
-    '--add', 'Microsoft.VisualStudio.Workload.NodeBuildTools', `
-    '--add', 'Microsoft.VisualStudio.Workload.WebBuildTools', `
-    '--add', 'Microsoft.VisualStudio.Workload.manageddesktopbuildtools', `
-    '--add', 'Microsoft.Net.Component.4.7.2.SDK', `
-    '--add', 'Microsoft.Component.ClickOnce.MSBuild', `
-    '--quiet', '--norestart', '--nocache' `
-    -NoNewWindow -Wait; `
-    Remove-Item -Force vs_buildtools.exe; `
-    Remove-Item -Force -Recurse """${Env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer"""; `
-    Remove-Item -Force -Recurse ${Env:TEMP}\*; `
-    Remove-Item -Force -Recurse """C:\ProgramData\Package Cache"""
+ 
+# Install chocolatey
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
+    iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+ 
+# Set default confirmation value to yes
+RUN choco feature enable -n allowGlobalConfirmation
 
-# Set PATH in one layer to keep image size down.
- RUN setx /M PATH $(${Env:PATH} `
-    + """;${Env:ProgramFiles}\NuGet""" `
-    + """;${Env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow""" `
-    + """;${Env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin""" `
-    + """;${Env:ProgramFiles(x86)}\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools""" `
-    + """;${Env:ProgramFiles(x86)}\Microsoft SDKs\ClickOnce\SignTool""")
+# Install VS build tools and other workloads
+RUN choco install \
+    visualstudio2022buildtools \
+    visualstudio2022testagent \
+    visualstudio2022-workload-azurebuildtools \
+    visualstudio2022-workload-manageddesktopbuildtools \
+    visualstudio2022-workload-nodebuildtools \
+    visualstudio2022-workload-webbuildtools
+ 
+# Install .NET Framework 3.5, 3.0, 2.0
+RUN choco install dotnet3.5
+ 
+# Install custom ST dependencies
+RUN choco install advanced-installer --version 21.1.0; \
+    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 21.1\bin\x86\AdvancedInstaller.com' /M
 
-# Install Targeting Packs
-RUN @('4.0', '4.5.2', '4.6.2', '4.7.2', '4.8') `
-    | %{ `
-    Invoke-WebRequest -UseBasicParsing https://dotnetbinaries.blob.core.windows.net/referenceassemblies/v${_}.zip -OutFile referenceassemblies.zip; `
-    Expand-Archive referenceassemblies.zip -Force -DestinationPath """${Env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework"""; `
-    Remove-Item -Force referenceassemblies.zip; `
-    }
+RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
+COPY PureComponents_NETWinFormsSuite_V2011.msi .
+RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinFormsSuite_V2011.msi /quiet'
+RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
+
+RUN choco install 7zip.install
+
+# Start the Azure DevOps agent
 COPY start.ps1 .
 RUN mkdir azp
 CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
