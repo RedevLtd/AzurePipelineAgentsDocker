@@ -1,10 +1,29 @@
-Windows based image alternative
+### Windows Server based image
 
-Uses a standard base windows image, and manually installs the various frameworks, sdks and test tools
-
-dotnet Frameworks '4.0', '4.5.2', '4.6.2', '4.7.2', '4.8'
+Uses a standard base windows server image, and manually installs the various frameworks, sdks and test tools
 
 docker build -t dotnetframeworkalt-azure-devops-agent .
 
-docker run -e AZP_URL= -e AZP_TOKEN= -e AZP_AGENT_NAME=FrameworkAltBuildAgent dotnetframeworkalt-azure-devops-agent
+Windows Command:
 
+```
+docker run `
+    -e AZP_URL=<Azure-DevOps-Url> `
+    -e AZP_TOKEN=<Azure-DevOps-Token> `
+    -e AZP_AGENT_NAME=FrameworkBuildAgent `
+    -e PURE_COMPONENTS_LICENSE=<Pure-Components-License> `
+    -e ADVANCED_INSTALLER_LICENSE=<Advanced-Installer-License> `
+    dotnetframeworkalt-azure-devops-agent
+```
+
+Linux Command:
+
+```
+docker run \
+    -e AZP_URL=<Azure-DevOps-Url> \
+    -e AZP_TOKEN=<Azure-DevOps-Token> \
+    -e AZP_AGENT_NAME=FrameworkBuildAgent \
+    -e PURE_COMPONENTS_LICENSE=<Pure-Components-License> \
+    -e ADVANCED_INSTALLER_LICENSE=<Advanced-Installer-License> \
+    dotnetframeworkalt-azure-devops-agent
+```
