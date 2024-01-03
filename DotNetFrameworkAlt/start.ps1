@@ -29,7 +29,7 @@ Set-DnsClientServerAddress -InterfaceIndex 4 -ServerAddresses ("8.8.8.8","8.8.4.
 
 # Set AdvancedInstaller license if present
 if ((Test-Path Env:ADVANCED_INSTALLER_LICENSE)) {
-  Write-Host "info: ADVANCED_INSTALLER_LICENCE environmental variable found. Activating license..." -ForegroundColor Cyan
+  Write-Host "info: ADVANCED_INSTALLER_LICENSE environmental variable found. Activating license..." -ForegroundColor Cyan
 
   & $Env:AdvancedInstaller /register $Env:ADVANCED_INSTALLER_LICENSE
 
@@ -38,10 +38,10 @@ if ((Test-Path Env:ADVANCED_INSTALLER_LICENSE)) {
     exit 1
   }
 
-  Write-Host "info: ADVANCED_INSTALLER_LICENCE activated." -ForegroundColor Green
+  Write-Host "info: ADVANCED_INSTALLER_LICENSE activated." -ForegroundColor Green
 }
 else {
-  Write-Warning "The ADVANCED_INSTALLER_LICENCE environmental variable was not found."
+  Write-Warning "The ADVANCED_INSTALLER_LICENSE environmental variable was not found."
 }
 
 Remove-Item Env:AZP_TOKEN
@@ -54,7 +54,7 @@ New-Item "\azp\agent" -ItemType directory | Out-Null
 Set-Location azp
 
 # Let the agent ignore the token env variables
-$Env:VSO_AGENT_IGNORE = "AZP_TOKEN,AZP_TOKEN_FILE,PURE_COMPONENTS_LICENCE,ADVANCED_INSTALLER_LICENCE"
+$Env:VSO_AGENT_IGNORE = "AZP_TOKEN,AZP_TOKEN_FILE,ADVANCED_INSTALLER_LICENSE"
 
 Set-Location agent
 
