@@ -19,7 +19,8 @@ RUN choco install \
     visualstudio2022-workload-azurebuildtools \
     visualstudio2022-workload-manageddesktopbuildtools \
     visualstudio2022-workload-nodebuildtools \
-    visualstudio2022-workload-webbuildtools
+    visualstudio2022-workload-webbuildtools \
+    visualstudio2022-workload-vctools
  
 # Install .NET Framework 3.5, 3.0, 2.0
 RUN choco install dotnet3.5
