@@ -13,7 +13,7 @@ docker run `
     -e AZP_AGENT_NAME=FrameworkBuildAgent `
     -e PURE_COMPONENTS_LICENSE=<Pure-Components-License> `
     -e ADVANCED_INSTALLER_LICENSE=<Advanced-Installer-License> `
-    dotnetframeworkalt-azure-devops-agent
+    ghcr.io/redevltd/dotnetframeworkalt-azure-devops-agent
 ```
 
 Linux Command:
@@ -25,5 +25,5 @@ docker run \
     -e AZP_AGENT_NAME=FrameworkBuildAgent \
     -e PURE_COMPONENTS_LICENSE=<Pure-Components-License> \
     -e ADVANCED_INSTALLER_LICENSE=<Advanced-Installer-License> \
-    dotnetframeworkalt-azure-devops-agent
+    ghcr.io/redevltd/dotnetframeworkalt-azure-devops-agent
 ```
