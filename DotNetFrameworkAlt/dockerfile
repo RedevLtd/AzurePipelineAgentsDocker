@@ -26,7 +26,6 @@ RUN choco install \
 RUN choco install dotnet3.5
 
 # Install .NET Framework 4.0 dev packs
-RUN choco install netfx-4.0.3-devpack
 RUN choco install netfx-4.6.2-devpack
  
 # Install custom ST dependencies
