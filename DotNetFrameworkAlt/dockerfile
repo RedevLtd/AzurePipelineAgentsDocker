@@ -24,6 +24,9 @@ RUN choco install \
  
 # Install .NET Framework 3.5, 3.0, 2.0
 RUN choco install dotnet3.5
+
+# Install .NET Framework 4.0
+RUN choco install dotnet4.0
  
 # Install custom ST dependencies
 RUN choco install advanced-installer --version 21.3.1; \
