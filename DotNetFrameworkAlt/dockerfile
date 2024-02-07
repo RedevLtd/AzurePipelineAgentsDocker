@@ -25,10 +25,9 @@ RUN choco install \
 # Install .NET Framework 3.5, 3.0, 2.0
 RUN choco install dotnet3.5
 
-# Install .NET Framework 4.0
-RUN choco install dotnet4.0
-RUN choco install dotnet4.5.2
-RUN choco install dotnet4.6.1
+# Install .NET Framework 4.0 dev packs
+RUN choco install netfx-4.0.3-devpack
+RUN choco install netfx-4.6.2-devpack
  
 # Install custom ST dependencies
 RUN choco install advanced-installer --version 21.3.1; \
@@ -41,8 +40,6 @@ RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinForms
 RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
 
 RUN choco install 7zip.install
-
-RUN choco install visualstudio2019buildtools
 
 # Start the Azure DevOps agent
 COPY start.ps1 .
