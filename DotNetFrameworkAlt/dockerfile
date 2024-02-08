@@ -29,6 +29,7 @@ RUN choco install visualstudio2019buildtools
 RUN choco install dotnet3.5
 
 # Install .NET Framework 4.0 dev packs
+RUN choco install netfx-4.5.2-devpack
 RUN choco install netfx-4.6.2-devpack
  
 # Install custom ST dependencies
