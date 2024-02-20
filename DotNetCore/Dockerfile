@@ -19,16 +19,17 @@ ENV pwsh /usr/bin/pwsh
 RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get install nodejs
+RUN apt-get install libatomic1
 RUN apt-get install dotnet-sdk-3.1
 RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
 RUN apt-get install dotnet-sdk-7.0
 
-# Install dotnet 8 RC 2
+# Install dotnet 8
 RUN mkdir -p /usr/tmp/dotnet
 RUN echo $DOTNET_ROOT
-RUN curl https://download.visualstudio.microsoft.com/download/pr/9144f37e-b370-41ee-a86f-2d2a69251652/bc1d544112ec134184a5aec7f7a1eaf9/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz --output /usr/tmp/dotnet/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz
-RUN tar zxf "/usr/tmp/dotnet/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz" -C "/usr/share/dotnet"
+RUN curl https://download.visualstudio.microsoft.com/download/pr/85bcc525-4e9c-471e-9c1d-96259aa1a315/930833ef34f66fe9ee2643b0ba21621a/dotnet-sdk-8.0.201-linux-x64.tar.gz --output /usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz 
+RUN tar zxf "/usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz" -C "/usr/share/dotnet"
 RUN dotnet --list-sdks
 
 # Install NuGet CLI
