@@ -31,6 +31,7 @@ RUN echo $DOTNET_ROOT
 RUN curl https://download.visualstudio.microsoft.com/download/pr/85bcc525-4e9c-471e-9c1d-96259aa1a315/930833ef34f66fe9ee2643b0ba21621a/dotnet-sdk-8.0.201-linux-x64.tar.gz --output /usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz 
 RUN tar zxf "/usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz" -C "/usr/share/dotnet"
 RUN dotnet --list-sdks
+RUN dotnet install wasm-tools
 
 # Install NuGet CLI
 RUN apt-get install nuget
@@ -82,7 +83,8 @@ RUN apt-get install -y --no-install-recommends \
         libicu60 \
         libunwind8 \
         netcat \
-        libssl1.0
+        libssl1.0 \
+        libatomic1
 
 WORKDIR /azp
 
