@@ -43,6 +43,7 @@ RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinForms
 RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
 
 RUN choco install 7zip.install
+RUN choco install msbuild.communitytasks
 
 # Start the Azure DevOps agent
 COPY start.ps1 .
