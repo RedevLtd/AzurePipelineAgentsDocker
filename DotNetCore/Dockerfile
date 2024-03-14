@@ -8,7 +8,7 @@ RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 RUN apt-get update
 RUN apt-get install -y wget
 # https://dotnet.microsoft.com/download/linux-package-manager/ubuntu18-04/sdk-current
-RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 
 RUN apt-get install software-properties-common
