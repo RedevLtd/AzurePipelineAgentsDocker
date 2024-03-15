@@ -7,6 +7,7 @@ RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 RUN apt-get update
 RUN apt-get install -y wget
+RUN apt-get install dotnet-sdk-8.0
 # https://dotnet.microsoft.com/download/linux-package-manager/ubuntu18-04/sdk-current
 RUN wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
@@ -24,7 +25,7 @@ RUN apt-get install libatomic1
 #RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
 RUN apt-get install dotnet-sdk-7.0
-RUN apt-get install dotnet-sdk-8.0
+
 
 RUN dotnet --list-sdks
 RUN dotnet workload install wasm-tools
