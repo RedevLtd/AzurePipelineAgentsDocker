@@ -8,7 +8,7 @@ RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 RUN apt-get update
 RUN apt-get install -y wget
 # https://dotnet.microsoft.com/download/linux-package-manager/ubuntu18-04/sdk-current
-RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+RUN wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 
 RUN apt-get install software-properties-common
@@ -24,12 +24,8 @@ RUN apt-get install dotnet-sdk-3.1
 RUN apt-get install dotnet-sdk-5.0
 RUN apt-get install dotnet-sdk-6.0
 RUN apt-get install dotnet-sdk-7.0
+RUN apt-get install dotnet-sdk-8.0
 
-# Install dotnet 8
-RUN mkdir -p /usr/tmp/dotnet
-RUN echo $DOTNET_ROOT
-RUN curl https://download.visualstudio.microsoft.com/download/pr/85bcc525-4e9c-471e-9c1d-96259aa1a315/930833ef34f66fe9ee2643b0ba21621a/dotnet-sdk-8.0.201-linux-x64.tar.gz --output /usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz 
-RUN tar zxf "/usr/tmp/dotnet/dotnet-sdk-8.0.201-linux-x64.tar.gz" -C "/usr/share/dotnet"
 RUN dotnet --list-sdks
 RUN dotnet workload install wasm-tools
 
