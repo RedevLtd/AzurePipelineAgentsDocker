@@ -22,6 +22,7 @@ RUN apt-get install dotnet-sdk-8.0
 
 RUN wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
+RUN apt-get update
 
 RUN apt-get install powershell
 ENV pwsh /usr/bin/pwsh
