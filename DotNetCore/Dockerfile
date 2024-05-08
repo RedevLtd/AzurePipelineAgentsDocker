@@ -29,6 +29,7 @@ ENV pwsh /usr/bin/pwsh
 
 RUN dotnet --list-sdks
 RUN dotnet workload install wasm-tools
+RUN dotnet workload install wasm-tools-net6
 
 # Install NuGet CLI
 RUN apt-get install nuget
