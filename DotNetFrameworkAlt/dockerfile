@@ -31,6 +31,10 @@ RUN choco install dotnet3.5
 # Install .NET Framework 4.0 dev packs
 RUN choco install netfx-4.5.2-devpack
 RUN choco install netfx-4.6.2-devpack
+
+# Install .NET Core
+RUN choco install dotnet-6.0-sdk-4xx
+RUN choco install dotnet-8.0-sdk-3xx
  
 # Install custom ST dependencies
 RUN choco install advanced-installer --version 21.3.1; \
