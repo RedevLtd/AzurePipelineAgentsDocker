@@ -32,7 +32,8 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     fi; \
     curl -LsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
-
+# Install dotnet for maui-android
+RUN apt-get install dotnet-sdk-8.0
 
 # Install OpenJDK-11
 RUN apt-get update && \
