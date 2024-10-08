@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 # To make it easier for build and release pipelines to run apt-get,
 # configure apt to not require confirmation (assume the -y argument by default)
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     iputils-ping \
     libcurl4 \
-    libicu60 \
+    libicu70 \
     libunwind8 \
     netcat \
     libssl1.0 \
@@ -22,7 +22,7 @@ RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
   && rm -rf /var/lib/apt/lists/*
 
 ARG TARGETARCH=amd64
-ARG AGENT_VERSION=2.218.1
+ARG AGENT_VERSION=3.238.0
 
 WORKDIR /azp
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
@@ -45,7 +45,7 @@ RUN apt-get update && \
     apt-get install -y openjdk-11-jdk && \
     apt-get install -y ant && \
     apt-get clean;
-    
+
 # Fix certificate issues
 RUN apt-get update && \
     apt-get install ca-certificates-java && \
@@ -66,6 +66,9 @@ ENV ANDROID_SDK_ROOT="/home/user/android-sdk-linux" \
     ANDROID_HOME="/home/user/android-sdk-linux" \
     SDK_URL="https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip" \
     GRADLE_URL="https://services.gradle.org/distributions/gradle-6.7-bin.zip"
+
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+RUN dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
 
 # Create a non-root user
 RUN useradd -m user
@@ -92,7 +95,6 @@ RUN wget $GRADLE_URL -O gradle.zip \
  && mkdir .gradle
 
 ENV PATH="/home/user/gradle/bin:${ANDROID_SDK_ROOT}/platform-tools:${PATH}"
-
 
 USER root
 
