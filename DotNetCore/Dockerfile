@@ -11,7 +11,7 @@ RUN apt-get install software-properties-common
 RUN apt-get install apt-transport-https
 RUN apt-get update
 RUN apt-get install curl
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash
 RUN apt-get install nodejs
 RUN apt-get install libatomic1
 #RUN apt-get install dotnet-sdk-3.1
