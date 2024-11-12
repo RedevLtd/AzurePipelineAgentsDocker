@@ -37,8 +37,8 @@ RUN choco install dotnet-6.0-sdk-4xx
 RUN choco install dotnet-8.0-sdk-3xx
  
 # Install custom ST dependencies
-RUN choco install advanced-installer --version 21.3.1; \
-    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 21.3.1\bin\x86\AdvancedInstaller.com' /M
+RUN choco install advanced-installer --version 22.0; \
+    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 22.0\bin\x86\AdvancedInstaller.com' /M
 
 RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
