@@ -5,6 +5,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
+RUN add-apt-repository ppa:dotnet/backports
 RUN apt-get update
 RUN apt-get install -y wget
 RUN apt-get install software-properties-common
