@@ -6,12 +6,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 RUN apt-get update
-RUN apt-get software-properties-common
-RUN add-apt-repository ppa:dotnet/backports
-RUN apt-get update
 RUN apt-get install -y wget
 RUN apt-get install software-properties-common
 RUN apt-get install apt-transport-https
+RUN add-apt-repository ppa:dotnet/backports
 RUN apt-get update
 RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_22.x | bash
