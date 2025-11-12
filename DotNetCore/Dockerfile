@@ -22,14 +22,6 @@ RUN apt-get install dotnet-sdk-7.0
 RUN apt-get install dotnet-sdk-8.0
 RUN apt-get install dotnet-sdk-9.0
 
-# .NET 10 temp ========
-RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh \
- && chmod +x dotnet-install.sh \
- && ./dotnet-install.sh --channel 10.0 --install-dir /root/.dotnet10 --version latest
-ENV DOTNET_ROOT=/root/.dotnet10
-ENV PATH=$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH
-# ======================
-
 RUN wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update
