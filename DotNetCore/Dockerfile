@@ -21,6 +21,7 @@ RUN apt-get install dotnet-sdk-6.0
 RUN apt-get install dotnet-sdk-7.0
 RUN apt-get install dotnet-sdk-8.0
 RUN apt-get install dotnet-sdk-9.0
+RUN apt-get install dotnet-sdk-10.0
 
 RUN wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
