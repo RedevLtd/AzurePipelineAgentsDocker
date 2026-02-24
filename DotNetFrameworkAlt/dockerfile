@@ -35,6 +35,7 @@ RUN choco install netfx-4.6.2-devpack
 # Install .NET Core
 RUN choco install dotnet-6.0-sdk-4xx
 RUN choco install dotnet-8.0-sdk-3xx
+RUN choco install dotnet-10.0-sdk
  
 # Install custom ST dependencies
 RUN choco install advanced-installer --version 22.0; \
