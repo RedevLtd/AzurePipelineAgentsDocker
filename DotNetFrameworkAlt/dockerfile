@@ -26,11 +26,13 @@ RUN choco install --parallel \
     dotnet-6.0-sdk-4xx \
     dotnet-8.0-sdk-3xx \
     dotnet-10.0-sdk \
-    advanced-installer --version=22.0 \
     7zip.install \
-    msbuild.communitytasks; \
-    choco install dotnetreactor --version=6.9.0.0 --ignore-checksums; \
+    msbuild.communitytasks
+
+RUN choco install advanced-installer --version 22.0; \
     setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 22.0\bin\x86\AdvancedInstaller.com' /M
+
+RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
 COPY PureComponents_NETWinFormsSuite_V2011.msi .
 RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinFormsSuite_V2011.msi /quiet'
