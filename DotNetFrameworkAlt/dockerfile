@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/server:ltsc2022
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 WORKDIR /
  
 # Set default shell to PowerShell
@@ -12,40 +12,29 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
 # Set default confirmation value to yes
 RUN choco feature enable -n allowGlobalConfirmation
 
-# Install VS build tools and other workloads
-RUN choco install \
-    visualstudio2022buildtools \
-    visualstudio2022testagent \
-    visualstudio2022-workload-azurebuildtools \
-    visualstudio2022-workload-manageddesktopbuildtools \
-    visualstudio2022-workload-nodebuildtools \
-    visualstudio2022-workload-webbuildtools \
-    visualstudio2022-workload-vctools
-
-# Install VS 2019 build tools 
-RUN choco install visualstudio2019buildtools
-
-# Install .NET Framework 4.0 dev packs
-RUN choco install netfx-4.5.2-devpack
-RUN choco install netfx-4.6.2-devpack
-
-# Install .NET Core
-RUN choco install dotnet-6.0-sdk-4xx
-RUN choco install dotnet-8.0-sdk-3xx
-RUN choco install dotnet-10.0-sdk
- 
-# Install custom ST dependencies
-RUN choco install advanced-installer --version 22.0; \
+# Install all Chocolatey packages in one command (parallelized)
+RUN choco install --parallel \
+    visualstudio2026buildtools \
+    visualstudio2026testagent \
+    visualstudio2026-workload-azurebuildtools \
+    visualstudio2026-workload-manageddesktopbuildtools \
+    visualstudio2026-workload-nodebuildtools \
+    visualstudio2026-workload-webbuildtools \
+    visualstudio2026-workload-vctools \
+    netfx-4.5.2-devpack \
+    netfx-4.6.2-devpack \
+    dotnet-6.0-sdk-4xx \
+    dotnet-8.0-sdk-3xx \
+    dotnet-10.0-sdk \
+    advanced-installer --version=22.0 \
+    7zip.install \
+    msbuild.communitytasks; \
+    choco install dotnetreactor --version=6.9.0.0 --ignore-checksums; \
     setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 22.0\bin\x86\AdvancedInstaller.com' /M
-
-RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
 COPY PureComponents_NETWinFormsSuite_V2011.msi .
 RUN Start-Process msiexec.exe -Wait -ArgumentList '/I PureComponents_NETWinFormsSuite_V2011.msi /quiet'
 RUN Remove-Item PureComponents_NETWinFormsSuite_V2011.msi
-
-RUN choco install 7zip.install
-RUN choco install msbuild.communitytasks
 
 # Start the Azure DevOps agent
 COPY start.ps1 .
