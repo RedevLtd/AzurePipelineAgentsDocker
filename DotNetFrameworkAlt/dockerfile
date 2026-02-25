@@ -15,7 +15,6 @@ RUN choco feature enable -n allowGlobalConfirmation
 # Install all Chocolatey packages in one command (parallelized)
 RUN choco install --parallel \
     visualstudio2026buildtools \
-    visualstudio2026testagent \
     visualstudio2026-workload-azurebuildtools \
     visualstudio2026-workload-manageddesktopbuildtools \
     visualstudio2026-workload-nodebuildtools \
