@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libunwind8 \
     netcat \
     libssl1.0 \
+    software-properties-common \
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
@@ -33,12 +34,10 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     curl -LsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
 # Install dotnet for maui-android
-RUN curl -o packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
-RUN dpkg -i packages-microsoft-prod.deb
-RUN rm packages-microsoft-prod.deb
-
+RUN add-apt-repository ppa:dotnet/backports
 RUN apt-get update
 RUN apt-get install dotnet-sdk-8.0
+RUN apt-get install dotnet-sdk-10.0
 
 # Install OpenJDK-11
 RUN apt-get update && \
