@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libunwind8 \
     netcat \
     libssl1.0 \
-    software-properties-common \
+    unzip \
+    wget \
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
@@ -33,11 +34,16 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     fi; \
     curl -fLsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
-# Install .NET SDKs for MAUI Android builds
-RUN add-apt-repository ppa:dotnet/backports
-RUN apt-get update
-RUN apt-get install dotnet-sdk-8.0
-RUN apt-get install dotnet-sdk-10.0
+# Install Microsoft .NET SDKs for MAUI Android builds
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV PATH="${DOTNET_ROOT}:${DOTNET_ROOT}/tools:${PATH}"
+RUN if [ "$TARGETARCH" = "amd64" ]; then DOTNET_ARCH=x64; else DOTNET_ARCH="$TARGETARCH"; fi \
+ && mkdir -p "${DOTNET_ROOT}" \
+ && curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh \
+ && chmod +x /tmp/dotnet-install.sh \
+ && /tmp/dotnet-install.sh --channel 8.0 --install-dir "${DOTNET_ROOT}" --architecture "$DOTNET_ARCH" \
+ && /tmp/dotnet-install.sh --channel 10.0 --install-dir "${DOTNET_ROOT}" --architecture "$DOTNET_ARCH" \
+ && rm /tmp/dotnet-install.sh
 
 # Install OpenJDK versions for Android builds
 RUN apt-get update && \
@@ -58,6 +64,8 @@ RUN export JAVA_HOME
 
 RUN dotnet --list-sdks
 RUN dotnet workload install maui-android --version 10.0.105
+RUN test -f /root/.dotnet/metadata/workloads/InstalledPacks/v1/Microsoft.Android.Sdk.Linux/36.1.43/10.0.100 \
+ && test -f /root/.dotnet/metadata/workloads/InstalledPacks/v1/Microsoft.Maui.Sdk/10.0.20/10.0.100
 
 RUN dpkg --add-architecture i386 \
  && apt-get update \
