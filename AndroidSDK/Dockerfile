@@ -87,8 +87,17 @@ RUN mkdir "$ANDROID_SDK_ROOT" .android \
  && unzip sdk.zip \
  && rm sdk.zip \
  && cd .. \
- && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager "tools" "platform-tools" "platforms;android-29" "build-tools;30.0.3" "platforms;android-33" "platforms;android-36" "build-tools;36.0.0" \
- && yes | $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager --licenses
+ && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager --sdk_root="$ANDROID_SDK_ROOT" \
+    "tools" \
+    "platform-tools" \
+    "platforms;android-29" \
+    "build-tools;30.0.3" \
+    "platforms;android-33" \
+    "platforms;android-36" \
+    "build-tools;36.0.0" \
+ && yes | $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses \
+ && test -f "$ANDROID_SDK_ROOT/platforms/android-36/android.jar" \
+ && test -x "$ANDROID_SDK_ROOT/platform-tools/adb"
 
 # Install Gradle
 RUN wget $GRADLE_URL -O gradle.zip \
