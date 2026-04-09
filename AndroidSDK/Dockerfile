@@ -57,7 +57,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64/
 RUN export JAVA_HOME
 
 RUN dotnet --list-sdks
-RUN dotnet workload install maui-android
+RUN dotnet workload install maui-android --version 10.0.105
 
 RUN dpkg --add-architecture i386 \
  && apt-get update \
