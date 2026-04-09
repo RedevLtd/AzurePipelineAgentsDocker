@@ -64,8 +64,8 @@ RUN export JAVA_HOME
 
 RUN dotnet --list-sdks
 RUN dotnet workload install maui-android --version 10.0.105
-RUN test -f /root/.dotnet/metadata/workloads/InstalledPacks/v1/Microsoft.Android.Sdk.Linux/36.1.43/10.0.100 \
- && test -f /root/.dotnet/metadata/workloads/InstalledPacks/v1/Microsoft.Maui.Sdk/10.0.20/10.0.100
+RUN find /root/.dotnet /usr/share/dotnet -path '*/metadata/workloads/InstalledPacks/v1/Microsoft.Android.Sdk.Linux/36.1.43/*' | grep -q . \
+ && find /root/.dotnet /usr/share/dotnet -path '*/metadata/workloads/InstalledPacks/v1/Microsoft.Maui.Sdk/10.0.20/*' | grep -q .
 
 RUN dpkg --add-architecture i386 \
  && apt-get update \
