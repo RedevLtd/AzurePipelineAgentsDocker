@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libunwind8 \
     netcat \
     libssl1.0 \
-    software-properties-common \
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
@@ -33,15 +32,18 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     fi; \
     curl -fLsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
-# Install dotnet for maui-android
-RUN add-apt-repository ppa:dotnet/backports
+# Install .NET SDKs for MAUI Android builds
+RUN curl -o packages-microsoft-prod.deb https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN rm packages-microsoft-prod.deb
 RUN apt-get update
 RUN apt-get install dotnet-sdk-8.0
 RUN apt-get install dotnet-sdk-10.0
 
-# Install OpenJDK-11
+# Install OpenJDK versions for Android builds
 RUN apt-get update && \
     apt-get install -y openjdk-11-jdk && \
+    apt-get install -y openjdk-21-jdk && \
     apt-get install -y ant && \
     apt-get clean;
 
@@ -51,9 +53,13 @@ RUN apt-get update && \
     apt-get clean && \
     update-ca-certificates -f;
 
-# Setup JAVA_HOME -- useful for docker commandline
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+# Setup JAVA_HOME -- default to Java 21 for .NET 10 Android builds
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64/
 RUN export JAVA_HOME
+
+RUN dotnet --list-sdks
+RUN dotnet workload install maui-android
+RUN dotnet workload install maui-android --sdk-version 8.0.100
 
 RUN dpkg --add-architecture i386 \
  && apt-get update \
@@ -83,7 +89,7 @@ RUN mkdir "$ANDROID_SDK_ROOT" .android \
  && unzip sdk.zip \
  && rm sdk.zip \
  && cd .. \
- && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager "tools" "platforms;android-29" "build-tools;30.0.3" "platforms;android-33" \
+ && $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager "tools" "platform-tools" "platforms;android-29" "build-tools;30.0.3" "platforms;android-33" "platforms;android-36" "build-tools;36.0.0" \
  && yes | $ANDROID_SDK_ROOT/cmdline-tools/tools/bin/sdkmanager --licenses
 
 # Install Gradle
