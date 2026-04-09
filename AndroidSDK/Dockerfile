@@ -58,7 +58,6 @@ RUN export JAVA_HOME
 
 RUN dotnet --list-sdks
 RUN dotnet workload install maui-android
-RUN dotnet workload install maui-android --sdk-version 8.0.100
 
 RUN dpkg --add-architecture i386 \
  && apt-get update \
