@@ -3,6 +3,25 @@
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8
 WORKDIR /
 
+# Set default shell to PowerShell for Chocolatey/VS Build Tools installation.
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install the Visual Studio Build Tools workload that brings in VSTest support.
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
+    iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+RUN choco feature enable -n allowGlobalConfirmation
+
+RUN choco install --parallel \
+    visualstudio2026buildtools \
+    visualstudio2026-workload-azurebuildtools \
+    visualstudio2026-workload-manageddesktopbuildtools \
+    visualstudio2026-workload-nodebuildtools \
+    visualstudio2026-workload-webbuildtools \
+    visualstudio2026-workload-vctools \
+    msbuild.communitytasks
+
 COPY start.ps1 .
 RUN mkdir azp
 CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
