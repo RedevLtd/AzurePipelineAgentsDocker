@@ -1,17 +1,20 @@
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 WORKDIR /
 
-# Set default shell to PowerShell for Chocolatey/VS Build Tools installation.
+# Set default shell to PowerShell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Install the Visual Studio Build Tools workload that brings in VSTest support.
+# Install chocolatey
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
     iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
+# Set default confirmation value to yes
 RUN choco feature enable -n allowGlobalConfirmation
 
+# Install all Chocolatey packages in one command (parallelized)
 RUN choco install --parallel \
+    netfx-4.8-devpack \
     visualstudio2026buildtools \
     visualstudio2026-workload-azurebuildtools \
     visualstudio2026-workload-manageddesktopbuildtools \
@@ -20,6 +23,7 @@ RUN choco install --parallel \
     visualstudio2026-workload-vctools \
     msbuild.communitytasks
 
+# Start the Azure DevOps agent
 COPY start.ps1 .
 RUN mkdir azp
 CMD powershell -ExecutionPolicy Unrestricted .\start.ps1
