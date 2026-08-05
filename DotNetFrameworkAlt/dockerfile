@@ -28,8 +28,8 @@ RUN choco install --parallel \
     7zip.install \
     msbuild.communitytasks
 
-RUN choco install advanced-installer --version 22.0; \
-    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 22.0\bin\x86\AdvancedInstaller.com' /M
+RUN choco install advanced-installer --version 23.9; \
+    setx AdvancedInstaller 'C:\Program Files (x86)\Caphyon\Advanced Installer 23.9\bin\x86\AdvancedInstaller.com' /M
 
 RUN choco install dotnetreactor --version 6.9.0.0 --ignore-checksums
 
