@@ -25,6 +25,7 @@ RUN choco install --parallel \
     dotnet-6.0-sdk-4xx \
     dotnet-8.0-sdk-3xx \
     dotnet-10.0-sdk \
+    dotnet-11.0-sdk \
     7zip.install \
     msbuild.communitytasks
 
